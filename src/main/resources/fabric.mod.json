@@ -1,28 +1,28 @@
 {
 	"schemaVersion": 1,
-	"id": "etherealbow",
+	"id": "firstmod",
 	"version": "${version}",
-	"name": "EtherealBow",
+	"name": "FirstMod",
 	"description": "This is an example description! Tell everyone what your mod is about!",
 	"authors": [
-		"Me!"
+		"Skib"
 	],
 	"contact": {
 		"homepage": "",
 		"sources": ""
 	},
 	"license": "CC0-1.0",
-	"icon": "assets/etherealbow/icon.png",
+	"icon": "assets/firstmod/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"net.rsm.etherealbow.EtherealBow"
+			"net.rsm.etherealbow.FirstMod"
 		],
 		"fabric-datagen": [
-			"net.rsm.etherealbow.EtherealBowDataGenerator"
+			"net.rsm.etherealbow.FirstModDataGenerator"
 		],
 		"client": [
-			"net.rsm.etherealbow.EtherealBowClient"
+			"net.rsm.etherealbow.FirstModClient"
 		]
 	},
 	"mixins": [
