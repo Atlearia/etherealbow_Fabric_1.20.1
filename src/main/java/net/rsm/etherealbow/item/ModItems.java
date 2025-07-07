@@ -17,13 +17,15 @@ public class ModItems {
         return Registry.register(Registries.ITEM, Identifier.of(FirstMod.MOD_ID, name), item);
 
     }
-    public static void registerModItems()
-    {
-        FirstMod.LOGGER.info("Registering Mod Items for" + FirstMod.MOD_ID);
-        ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS).register(entries -> {
-            entries.add(ETHEREAL_BOW);
 
-        });
+    public static void registerModItems() {
+        FirstMod.LOGGER.info("Registering Mod Items for " + FirstMod.MOD_ID);
+
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS)
+                .register(entries -> entries.add(ETHEREAL_BOW));
+
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.COMBAT)
+                .register(entries -> entries.add(ETHEREAL_BOW));
     }
 }
 

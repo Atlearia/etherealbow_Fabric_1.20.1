@@ -1,16 +1,16 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "firstmod:item/etherealbow"
+    "layer0": "firstmod:item/bow"
   },
   "overrides": [
     {
       "predicate": { "pulling": 1.0, "pull": 0.5 },
-      "model": "firstmod:item/etherealbow_pulling_0"
+      "model": "firstmod:item/bow2"
     },
     {
       "predicate": { "pulling": 1.0, "pull": 0.9 },
-      "model": "firstmod:item/etherealbow_pulling_1"
+      "model": "firstmod:item/bow3"
     }
   ]
 }
