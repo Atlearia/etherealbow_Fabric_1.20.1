@@ -14,7 +14,7 @@ import net.minecraft.client.item.ModelPredicateProviderRegistry;
 public class ModItems {
     public static final Item ETHEREAL_BOW =
             registerItem("etherealbow",
-                    new EtherealBowItem(new Item.Settings().maxDamage(384)));
+                    new EtherealBowItem(new Item.Settings().maxDamage(9999)));
 
     private static Item registerItem(String name, Item item) {
         return Registry.register(Registries.ITEM, Identifier.of(FirstMod.MOD_ID, name), item);
