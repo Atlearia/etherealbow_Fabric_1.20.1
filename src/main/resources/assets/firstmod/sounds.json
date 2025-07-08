@@ -1,4 +1,13 @@
 {
+  "bow_pull": {
+    "category": "players",
+    "sounds": [
+      {
+        "name": "firstmod:bow_pull",
+        "stream": false
+      }
+    ]
+  },
   "bow_shoot": {
     "category": "players",
     "sounds": [

@@ -1,19 +1,21 @@
 package net.rsm.etherealbow.item;
 
-import net.minecraft.registry.Registry;
-import net.rsm.etherealbow.FirstMod;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 
 public class ModSounds {
-    public static final SoundEvent BOW_SHOOT = register("bow_shoot");
+    public static final Identifier BOW_PULL_ID  = new Identifier("firstmod", "bow_pull");
+    public static final SoundEvent  BOW_PULL     = SoundEvent.of(BOW_PULL_ID);
 
-    private static SoundEvent register(String name) {
-        Identifier id = new Identifier(FirstMod.MOD_ID, name);
-        // SoundEvent.of(id) creates the event; Registry.register makes it available
-        return Registry.register(Registries.SOUND_EVENT, id, SoundEvent.of(id));
+    public static final Identifier BOW_SHOOT_ID = new Identifier("firstmod", "bow_shoot");
+    public static final SoundEvent  BOW_SHOOT    = SoundEvent.of(BOW_SHOOT_ID);
+
+    /** Call this on the CLIENT to register your pull and shoot sounds. */
+    public static void registerClient() {
+        Registry.register(Registries.SOUND_EVENT, BOW_PULL_ID, BOW_PULL);
+        Registry.register(Registries.SOUND_EVENT, BOW_SHOOT_ID, BOW_SHOOT);
+        System.out.println("[ModSounds] Client sounds registered");
     }
-    // Call this once (e.g. from your main mod class) so the static initializer runs:
-    public static void init() {}
 }

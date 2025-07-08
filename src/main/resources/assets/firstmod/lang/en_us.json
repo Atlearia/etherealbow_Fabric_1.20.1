@@ -1,3 +1,4 @@
 {
-  "item.firstmod.etherealbow" : "Ethereal Bow"
+  "item.firstmod.etherealbow": "Ethereal Bow",
+  "item.firstmod.etherealbow.use": "minecraft:item.crossbow.loading_middle"
 }
