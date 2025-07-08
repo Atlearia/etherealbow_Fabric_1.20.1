@@ -3,7 +3,7 @@
     "category": "players",
     "sounds": [
       {
-        "name": "firstmod:bow_shot",
+        "name": "firstmod:bow_shoot",
         "stream": false
       }
     ]
