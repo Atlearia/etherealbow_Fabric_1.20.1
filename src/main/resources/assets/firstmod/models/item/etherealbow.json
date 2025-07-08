@@ -5,12 +5,8 @@
   },
   "overrides": [
     {
-      "predicate": { "pulling": 1.0, "pull": 0.9 },
-      "model":     "firstmod:item/pulling3"
-    },
-    {
-      "predicate": { "pulling": 1.0, "pull": 0.5 },
-      "model":     "firstmod:item/pulling2"
+      "predicate": { "pulling": 0.0 },
+      "model":     "minecraft:item/apple"
     }
   ]
 }
