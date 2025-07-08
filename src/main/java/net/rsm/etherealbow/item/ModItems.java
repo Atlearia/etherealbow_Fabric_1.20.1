@@ -9,6 +9,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.rsm.etherealbow.FirstMod;
+import net.minecraft.client.item.ModelPredicateProviderRegistry;
 
 public class ModItems {
     public static final Item ETHEREAL_BOW = registerItem("etherealbow", new BowItem(new Item.Settings().maxDamage(384)));

@@ -1,4 +1,4 @@
 {
-  "parent":"item/handheld",
+  "parent":"firstmod:item/etherealbow",
   "textures":{ "layer0":"firstmod:item/pulling3" }
 }

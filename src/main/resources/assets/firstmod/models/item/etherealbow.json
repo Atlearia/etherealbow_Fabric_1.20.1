@@ -1,12 +1,28 @@
 {
-  "parent": "item/handheld",
+  "parent": "item/generated",
   "textures": {
     "layer0": "firstmod:item/etherealbow"
   },
   "overrides": [
     {
-      "predicate": { "pulling": 0.0 },
-      "model":     "minecraft:item/apple"
+      "predicate": {
+        "pulling": 1
+      },
+      "model": "tutorialmod:item/pulling2"
+    },
+    {
+      "predicate": {
+        "pulling": 1,
+        "pull": 0.65
+      },
+      "model": "tutorialmod:item/pulling3"
+    },
+    {
+      "predicate": {
+        "pulling": 1,
+        "pull": 0.9
+      },
+      "model": "tutorialmod:item/pulling3"
     }
   ]
 }
