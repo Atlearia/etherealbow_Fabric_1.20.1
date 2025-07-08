@@ -1,0 +1,11 @@
+{
+  "bow_shoot": {
+    "category": "players",
+    "sounds": [
+      {
+        "name": "firstmod:bow_shot",
+        "stream": false
+      }
+    ]
+  }
+}
