@@ -40,6 +40,8 @@ public class EtherealBowItem extends BowItem {
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (!(user instanceof PlayerEntity player)) return;
+
+
         boolean creative = player.getAbilities().creativeMode;
         ItemStack ammo = RangedWeaponItem.getHeldProjectile(user, BOW_PROJECTILES);
         if (!creative && ammo.isEmpty()) return;
