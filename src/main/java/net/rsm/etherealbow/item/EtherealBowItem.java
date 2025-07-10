@@ -158,7 +158,7 @@ public class EtherealBowItem extends BowItem {
         direction = direction.normalize();
         
         // Create particle trail
-        int particleCount = (int) (distance * 2); // 2 particles per block
+        int particleCount = (int) (distance * 10); // 2 particles per block
         for (int i = 0; i < particleCount; i++) {
             double progress = (double) i / particleCount;
             Vec3d pos = start.add(direction.multiply(distance * progress));
