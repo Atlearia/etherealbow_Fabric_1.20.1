@@ -73,12 +73,12 @@ public class EtherealBowItem extends BowItem {
     private void fireLaserRay(World world, PlayerEntity player, ItemStack stack, float pull) {
         // Calculate laser properties based on pull strength
         double range = LASER_RANGE * pull;
-        float damage = 8.0F * pull; // Base damage scaled by pull
+        float damage = 20.0F * pull; // Base damage scaled by pull
         
         // Apply Power enchantment
         int power = EnchantmentHelper.getLevel(Enchantments.POWER, stack);
         if (power > 0) {
-            damage += power * 2.5F + 1.25F;
+            damage += power * 3.5F + 1.25F;
         }
 
         // Get player's look direction
@@ -156,18 +156,55 @@ public class EtherealBowItem extends BowItem {
         double distance = direction.length();
         direction = direction.normalize();
         
-        // Create particle trail
-        int particleCount = (int) (distance * 10); // 2 particles per block
+        // Start particles 2 blocks in front of the player to avoid blocking view
+        Vec3d particleStart = start.add(direction.multiply(1.5));
+        double particleDistance = distance - 1.5; // Adjust distance accordingly
+        
+        // Don't create particles if the laser is too short
+        if (particleDistance <= 0) return;
+        
+        // Create particle trail with tornado effect
+        int particleCount = (int) (particleDistance * 10); // 10 particles per block
         for (int i = 0; i < particleCount; i++) {
             double progress = (double) i / particleCount;
-            Vec3d pos = start.add(direction.multiply(distance * progress));
+            Vec3d pos = particleStart.add(direction.multiply(particleDistance * progress));
             
-            // Use different particles - you can customize these
+            // Main end rod particle
             world.spawnParticles(
                 ParticleTypes.END_ROD, // Bright white particle
                 pos.x, pos.y, pos.z,
                 1, 0, 0, 0, 0
             );
+            
+            // Create tornado effect around the end rod trail
+            double time = System.currentTimeMillis() / 1000.0; // Use time for rotation
+            double radius = 0.3; // Tornado radius
+            int tornadoParticles = 3; // Number of tornado particles per position
+            
+            for (int j = 0; j < tornadoParticles; j++) {
+                // Calculate angle for each tornado particle
+                double angle = (time * 3.0) + (j * Math.PI * 2.0 / tornadoParticles) + (progress * Math.PI * 4.0);
+                
+                // Create perpendicular vectors to the laser direction for circular motion
+                Vec3d perpendicular1 = new Vec3d(0, 1, 0);
+                if (Math.abs(direction.y) > 0.9) {
+                    perpendicular1 = new Vec3d(1, 0, 0);
+                }
+                perpendicular1 = perpendicular1.crossProduct(direction).normalize();
+                Vec3d perpendicular2 = direction.crossProduct(perpendicular1);
+                
+                // Calculate tornado particle position
+                Vec3d tornadoOffset = perpendicular1.multiply(Math.cos(angle) * radius)
+                    .add(perpendicular2.multiply(Math.sin(angle) * radius));
+                Vec3d tornadoPos = pos.add(tornadoOffset);
+                
+                // Spawn blue tornado particles (using soul flame for blue color)
+                world.spawnParticles(
+                    ParticleTypes.SOUL_FIRE_FLAME,
+                    tornadoPos.x, tornadoPos.y, tornadoPos.z,
+                    1, 0, 0, 0, 0
+                );
+            }
         }
         
         // Impact particles
@@ -175,6 +212,13 @@ public class EtherealBowItem extends BowItem {
             ParticleTypes.EXPLOSION,
             end.x, end.y, end.z,
             3, 0.5, 0.5, 0.5, 0
+        );
+        
+        // Blue impact particles to match the tornado
+        world.spawnParticles(
+            ParticleTypes.SOUL_FIRE_FLAME,
+            end.x, end.y, end.z,
+            8, 0.3, 0.3, 0.3, 0.1
         );
     }
 }
