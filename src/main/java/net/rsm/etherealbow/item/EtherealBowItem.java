@@ -41,7 +41,6 @@ public class EtherealBowItem extends BowItem {
 
         // Only on the client, and only for your custom bow:
         if (world.isClient && !playersWithSoundPlaying.contains(user.getUuid())) {
-            System.out.println("[EtherealBowItem] use() called, playing BOW_PULL");
             user.playSound(ModSounds.BOW_PULL, 1.0F, 1.0F);
             playersWithSoundPlaying.add(user.getUuid());
         }

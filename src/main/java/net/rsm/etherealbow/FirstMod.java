@@ -15,6 +15,5 @@ public class FirstMod implements ModInitializer {
 	public void onInitialize() {
 		ModItems.registerModItems();
 
-		LOGGER.info("Hello Fabric world!");
 	}
 }

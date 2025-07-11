@@ -14,7 +14,7 @@ import net.minecraft.client.item.ModelPredicateProviderRegistry;
 public class ModItems {
     public static final Item ETHEREAL_BOW =
             registerItem("etherealbow",
-                    new EtherealBowItem(new Item.Settings().maxDamage(9999)));
+                    new EtherealBowItem(new Item.Settings().maxDamage(99)));
 
     private static Item registerItem(String name, Item item) {
         return Registry.register(Registries.ITEM, Identifier.of(FirstMod.MOD_ID, name), item);
@@ -24,8 +24,6 @@ public class ModItems {
     public static void registerModItems() {
         FirstMod.LOGGER.info("Registering Mod Items for " + FirstMod.MOD_ID);
 
-        ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS)
-                .register(entries -> entries.add(ETHEREAL_BOW));
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.COMBAT)
                 .register(entries -> entries.add(ETHEREAL_BOW));

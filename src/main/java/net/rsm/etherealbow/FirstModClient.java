@@ -18,7 +18,6 @@ import net.rsm.etherealbow.util.ModModelPredicates;
 public class FirstModClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
-        System.out.println("[FirstModClient] onInitializeClient() called!");
         ModModelPredicates.registerModelPredicates();
         ModSounds.registerClient();
 
