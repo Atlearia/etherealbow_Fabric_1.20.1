@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "item": "minecraft:netherine_ingot"
+    },
+    "X": {
+      "item": "minecraft:string"
+    }
+  },
+  "S": {
+    "item": "minecraft:beacon"
+  },
+  "pattern": [
+    " #X",
+    "#SX",
+    " #X"
+  ],
+  "result": {
+    "item": "minecraft:bow"
+  },
+  "show_notification": true
+}
