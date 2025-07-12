@@ -1,17 +1,17 @@
 {
 	"schemaVersion": 1,
 	"id": "firstmod",
-	"version": "${version}",
+	"version": "1.0.0",
 	"name": "FirstMod",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "Beautiful end game elven/fantasy style bow that releases a luminous energy beam with each shot. Very powerful but very expensive.",
 	"authors": [
-		"RSM"
+		"Atlearia"
 	],
 	"contact": {
 		"homepage": "",
 		"sources": ""
 	},
-	"license": "CC0-1.0",
+	"license": "MIT",
 	"icon": "assets/firstmod/icon.png",
 	"environment": "*",
 	"entrypoints": {

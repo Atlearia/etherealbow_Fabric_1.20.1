@@ -24,14 +24,11 @@ public class FirstModClient implements ClientModInitializer {
         UseItemCallback.EVENT.register((player, world, hand) -> {
             ItemStack stack = player.getStackInHand(hand);
             if (stack.getItem() instanceof EtherealBowItem) {
-                // Play pull sound on the client
                 if (world.isClient) {
                     player.playSound(ModSounds.BOW_PULL, 1.0F, 1.0F);
                 }
-                // Consume the action (start using) from the client side
                 return TypedActionResult.pass(stack);
             }
-            // Otherwise let vanilla handle it
             return TypedActionResult.pass(stack);
         });
     }

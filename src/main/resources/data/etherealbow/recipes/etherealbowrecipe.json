@@ -3,14 +3,14 @@
   "category": "equipment",
   "key": {
     "#": {
-      "item": "minecraft:netherine_ingot"
+      "item": "minecraft:netherite_ingot"
     },
     "X": {
       "item": "minecraft:string"
+    },
+    "S": {
+      "item": "minecraft:beacon"
     }
-  },
-  "S": {
-    "item": "minecraft:beacon"
   },
   "pattern": [
     " #X",
@@ -18,7 +18,7 @@
     " #X"
   ],
   "result": {
-    "item": "minecraft:bow"
+    "item": "firstmod:etherealbow"
   },
   "show_notification": true
 }

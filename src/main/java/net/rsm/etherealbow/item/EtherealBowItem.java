@@ -28,33 +28,28 @@ import java.util.UUID;
 
 public class EtherealBowItem extends BowItem {
     private static final Set<UUID> playersWithSoundPlaying = new HashSet<>();
-    private static final double LASER_RANGE = 50.0; // Maximum laser range
+    private static final double LASER_RANGE = 50.0;
     
     public EtherealBowItem(Settings settings) {
         super(settings);
     }
 
-    // 1) Play pull sound on the CLIENT as soon as right-clicking begins
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
 
-        // Only on the client, and only for your custom bow:
         if (world.isClient && !playersWithSoundPlaying.contains(user.getUuid())) {
             user.playSound(ModSounds.BOW_PULL, 1.0F, 1.0F);
             playersWithSoundPlaying.add(user.getUuid());
         }
 
-        // This starts the draw action:
         return super.use(world, user, hand);
     }
-
-    // 2) Shoot laser ray on release
+    //laser
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (!(user instanceof PlayerEntity player)) return;
-        
-        // Clear the sound state
+
         if (world.isClient) {
             playersWithSoundPlaying.remove(player.getUuid());
         }
@@ -63,39 +58,34 @@ public class EtherealBowItem extends BowItem {
         float pull = getPullProgress(useTime);
         if (pull < 0.1F) return;
 
-        // Fire the laser ray
         fireLaserRay(world, player, stack, pull);
-        
-        // Apply durability damage
+
         stack.damage(1, player, p -> p.sendToolBreakStatus(p.getActiveHand()));
     }
 
     private void fireLaserRay(World world, PlayerEntity player, ItemStack stack, float pull) {
-        // Calculate laser properties based on pull strength
         double range = LASER_RANGE * pull;
-        float damage = 20.0F * pull; // Base damage scaled by pull
-        
-        // Apply Power enchantment
+        float damage = 20.0F * pull; // damage, its 20 here normally its  ~ 8
+
         int power = EnchantmentHelper.getLevel(Enchantments.POWER, stack);
         if (power > 0) {
             damage += power * 3.5F + 1.25F;
         }
 
-        // Get player's look direction
+
         Vec3d start = player.getEyePos();
         Vec3d direction = player.getRotationVector();
         Vec3d end = start.add(direction.multiply(range));
 
-        // Perform raycast for blocks
         BlockHitResult blockHit = world.raycast(new RaycastContext(
             start, end, RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE, player
         ));
 
-        // Adjust end position if we hit a block
+
         Vec3d actualEnd = blockHit.getType() == HitResult.Type.BLOCK ? blockHit.getPos() : end;
         double actualRange = start.distanceTo(actualEnd);
 
-        // Find entities along the ray
+
         Box searchBox = new Box(start, actualEnd).expand(1.0);
         Entity hitEntity = null;
         double closestDistance = actualRange;
@@ -107,7 +97,7 @@ public class EtherealBowItem extends BowItem {
             Vec3d rayStart = start;
             Vec3d rayEnd = actualEnd;
             
-            // Simple ray-box intersection
+
             if (entityBox.raycast(rayStart, rayEnd).isPresent()) {
                 double distance = start.distanceTo(entity.getPos());
                 if (distance < closestDistance) {
@@ -118,15 +108,14 @@ public class EtherealBowItem extends BowItem {
             }
         }
 
-        // Deal damage to hit entity
+
         if (hitEntity != null && !world.isClient) {
             DamageSource damageSource = player.getDamageSources().playerAttack(player);
             boolean wasCrit = pull >= 1.0F;
             float finalDamage = wasCrit ? damage * 1.5F : damage;
             
             hitEntity.damage(damageSource, finalDamage);
-            
-            // Apply knockback if Punch enchantment is present
+
             int punch = EnchantmentHelper.getLevel(Enchantments.PUNCH, stack);
             if (punch > 0) {
                 Vec3d knockback = direction.multiply(punch * 0.6);
@@ -134,19 +123,19 @@ public class EtherealBowItem extends BowItem {
             }
         }
 
-        // Visual effects (particles)
+
         if (world instanceof ServerWorld serverWorld) {
             createLaserParticles(serverWorld, start, actualEnd);
         }
 
-        // Play sound
+
         if (!world.isClient) {
             world.playSound(
                 null,
                 player.getX(), player.getY(), player.getZ(),
                 ModSounds.BOW_SHOOT,
                 SoundCategory.PLAYERS,
-                1.0F, 1.0F + (pull * 0.5F) // Pitch varies with pull strength
+                1.0F, 1.0F + (pull * 0.5F)
             );
         }
     }
@@ -155,37 +144,30 @@ public class EtherealBowItem extends BowItem {
         Vec3d direction = end.subtract(start);
         double distance = direction.length();
         direction = direction.normalize();
-        
-        // Start particles 2 blocks in front of the player to avoid blocking view
+
         Vec3d particleStart = start.add(direction.multiply(1.5));
-        double particleDistance = distance - 1.5; // Adjust distance accordingly
-        
-        // Don't create particles if the laser is too short
+        double particleDistance = distance - 1.5;
+
         if (particleDistance <= 0) return;
-        
-        // Create particle trail with tornado effect
-        int particleCount = (int) (particleDistance * 10); // 10 particles per block
+
+        int particleCount = (int) (particleDistance * 10);
         for (int i = 0; i < particleCount; i++) {
             double progress = (double) i / particleCount;
             Vec3d pos = particleStart.add(direction.multiply(particleDistance * progress));
-            
-            // Main end rod particle
+
             world.spawnParticles(
-                ParticleTypes.END_ROD, // Bright white particle
+                ParticleTypes.END_ROD,
                 pos.x, pos.y, pos.z,
                 1, 0, 0, 0, 0
             );
-            
-            // Create tornado effect around the end rod trail
-            double time = System.currentTimeMillis() / 1000.0; // Use time for rotation
-            double radius = 0.3; // Tornado radius
-            int tornadoParticles = 3; // Number of tornado particles per position
+
+            double time = System.currentTimeMillis() / 1000.0;
+            double radius = 0.3;
+            int tornadoParticles = 3;
             
             for (int j = 0; j < tornadoParticles; j++) {
-                // Calculate angle for each tornado particle
                 double angle = (time * 3.0) + (j * Math.PI * 2.0 / tornadoParticles) + (progress * Math.PI * 4.0);
-                
-                // Create perpendicular vectors to the laser direction for circular motion
+
                 Vec3d perpendicular1 = new Vec3d(0, 1, 0);
                 if (Math.abs(direction.y) > 0.9) {
                     perpendicular1 = new Vec3d(1, 0, 0);
@@ -193,12 +175,11 @@ public class EtherealBowItem extends BowItem {
                 perpendicular1 = perpendicular1.crossProduct(direction).normalize();
                 Vec3d perpendicular2 = direction.crossProduct(perpendicular1);
                 
-                // Calculate tornado particle position
+
                 Vec3d tornadoOffset = perpendicular1.multiply(Math.cos(angle) * radius)
                     .add(perpendicular2.multiply(Math.sin(angle) * radius));
                 Vec3d tornadoPos = pos.add(tornadoOffset);
-                
-                // Spawn blue tornado particles (using soul flame for blue color)
+
                 world.spawnParticles(
                     ParticleTypes.SOUL_FIRE_FLAME,
                     tornadoPos.x, tornadoPos.y, tornadoPos.z,
@@ -206,15 +187,13 @@ public class EtherealBowItem extends BowItem {
                 );
             }
         }
-        
-        // Impact particles
+
         world.spawnParticles(
             ParticleTypes.EXPLOSION,
             end.x, end.y, end.z,
             3, 0.5, 0.5, 0.5, 0
         );
-        
-        // Blue impact particles to match the tornado
+
         world.spawnParticles(
             ParticleTypes.SOUL_FIRE_FLAME,
             end.x, end.y, end.z,
